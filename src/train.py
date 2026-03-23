@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from data import load_activities
 from features import feature_engineer
-from model import RunTimeRegressor
+from model import ModelRunner
 
 RANDOM_STATE = 42
 
@@ -20,7 +20,6 @@ FEATURE_COLUMNS = [
 TARGET_COLUMN = "total_time_min"
 
 def train_model(test_size=0.2):
-    # Load & process data
     raw_df = load_activities()
     feature_engineer("../data/raw/runs.csv")
 
@@ -34,17 +33,16 @@ def train_model(test_size=0.2):
         X, y, test_size=test_size, random_state=RANDOM_STATE
     )
 
-    model = RunTimeRegressor()
-    model.train(X_train, y_train)
+    runner = ModelRunner()
+    results_df = runner.train_and_evaluate(X_train, y_train, X_val, y_val)
 
-    metrics = model.evaluate(X_val, y_val)
-    preds = model.predict(X_val)
+    best_model_name = results_df.iloc[0]["Model"]
+    feat_imp = runner.get_feature_importance(best_model_name, FEATURE_COLUMNS)
 
     return {
-        "model": model,
-        "metrics": metrics,
+        "results": results_df,
+        "best_model": best_model_name,
+        "feature_importance": feat_imp,
         "X_val": X_val,
-        "y_val": y_val,
-        "preds": preds,
-        "features": FEATURE_COLUMNS
+        "y_val": y_val
     }
