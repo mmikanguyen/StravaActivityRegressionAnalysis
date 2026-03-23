@@ -37,12 +37,13 @@ def train_model(test_size=0.2):
     results_df = runner.train_and_evaluate(X_train, y_train, X_val, y_val)
 
     best_model_name = results_df.iloc[0]["Model"]
-    feat_imp = runner.get_feature_importance(best_model_name, FEATURE_COLUMNS)
+    #feat_imp = runner.get_feature_importance(best_model_name, FEATURE_COLUMNS)
 
     return {
         "results": results_df,
         "best_model": best_model_name,
-        "feature_importance": feat_imp,
+        "models": runner.trained_models,
+        #"feature_importance": feat_imp,
         "X_val": X_val,
         "y_val": y_val
     }
