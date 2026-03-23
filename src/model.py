@@ -1,40 +1,48 @@
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+import pandas as pd
+
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from sklearn.metrics import mean_squared_error, r2_score
 
 
-class RunTimeRegressor:
-    """
-    Linear regression baseline for predicting running time (minutes).
-    """
-
-    def __init__(self):
-        self.model = LinearRegression()
-        self.is_trained = False
-
-    def train(self, X_train, y_train):
-        self.model.fit(X_train, y_train)
-        self.is_trained = True
-
-    def predict(self, X):
-        if not self.is_trained:
-            raise RuntimeError("Model must be trained before prediction.")
-        return self.model.predict(X)
-
-    def evaluate(self, X, y):
-        preds = self.predict(X)
-        return {
-            "MAE": mean_absolute_error(y, preds),
-            "RMSE": np.sqrt(mean_squared_error(y, preds)),
-            "R2": r2_score(y, preds)
+class ModelRunner:
+    def __init__(self, random_state=42):
+        self.models = {
+            "Linear Regression": LinearRegression(),
+            "Ridge": Ridge(alpha=1.0),
+            "Random Forest": RandomForestRegressor(n_estimators=100, random_state=random_state),
+            "Gradient Boosting": GradientBoostingRegressor(n_estimators=100, random_state=random_state)
         }
+        self.trained_models = {}
 
+    def train_and_evaluate(self, X_train, y_train, X_val, y_val):
+        results = []
 
-    def coefficients(self, feature_names):
-        """
-        Returns a dictionary mapping feature names to coefficients.
-        """
-        if not self.is_trained:
-            raise RuntimeError("Model must be trained before accessing coefficients.")
+        for name, model in self.models.items():
+            model.fit(X_train, y_train)
+            preds = model.predict(X_val)
 
-        return dict(zip(feature_names, self.model.coef_))
+            rmse = np.sqrt(mean_squared_error(y_val, preds))
+            r2 = r2_score(y_val, preds)
+
+            results.append({
+                "Model": name,
+                "RMSE": rmse,
+                "R2": r2
+            })
+
+            self.trained_models[name] = model
+
+        return pd.DataFrame(results).sort_values(by="RMSE")
+
+    def get_feature_importance(self, model_name, feature_names):
+        model = self.trained_models.get(model_name)
+
+        if hasattr(model, "feature_importances_"):
+            return pd.DataFrame({
+                "Feature": feature_names,
+                "Importance": model.feature_importances_
+            }).sort_values(by="Importance", ascending=False)
+
+        return None
