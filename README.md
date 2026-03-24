@@ -32,10 +32,10 @@ features.csv contains additional variables calculated for modeling:
 
 ## 3. Model Training
 Trains and compares multiple regression models including:
-Linear Regression
-Ridge Regression
-Random Forest Regressor
-Gradient Boosting Regressor
+- Linear Regression
+- Ridge Regression
+- Random Forest Regressor
+- Gradient Boosting Regressor
 Evaluates performance using MAE, RMSE, and R².
 Uses an 80/20 train-test split, with the most recent runs reserved for testing.
 
