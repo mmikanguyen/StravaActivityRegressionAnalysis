@@ -40,10 +40,7 @@ Evaluates performance using MAE, RMSE, and R².
 Uses an 80/20 train-test split, with the most recent runs reserved for testing.
 
 ## 4. Exploration & Visualization
-Run explore.ipynb to:
-Train all models
-Generate visualizations (Actual vs Predicted, Residuals, Feature Distributions)
-Compare model performance side-by-side and identify the best performing model
+Run explore.ipynb to train all models, generate visualizations (Actual vs Predicted, Residuals, Feature Distributions) and compare model performance side-by-side and identify the best performing model
 
 ## Setup
 Clone repo and create a .env file in the project root with:
