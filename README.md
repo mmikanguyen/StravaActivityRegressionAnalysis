@@ -1,9 +1,15 @@
-# Strava Runs Regression Model
-This project uses data from the Strava API to build a machine learning model that predicts running time based on features such as distance, heart rate, cadence, elevation, and recent training load.
+## Strava Runs Regression Model 🏃‍♂️
 
-The goal is to learn patterns from past runs and use them to estimate future performance over different distances.
+Predict running performance based on Strava activity data using machine learning.
 
-Project Context:This project is based on my own running data. I began running regularly about six months ago, transitioning from a beginner to a more structured runner over time. In this period, my training evolved from short, easy runs to more varied workouts including longer runs, tempo efforts, and progressive mileage.
+Project Overview
+
+This project uses running data from the Strava API
+ to build a regression model that predicts total running time based on metrics such as distance, heart rate, cadence, elevation, and recent training load. The goal is to learn patterns from past runs and estimate future performance across different distances.
+
+## Context
+
+This project is based on my personal running journey. Over the past six months, I have transitioned from a beginner to a more structured runner. My training evolved from short, easy runs to longer runs, tempo workouts, and progressively higher mileage. This project captures that evolution and uses it to better predict performance trends.
 
 ## How It Works
 Fetch Data From Strava
